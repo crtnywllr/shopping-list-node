@@ -156,9 +156,9 @@ ShoppingList.prototype.deleteItem = function(id) {
 };
 ShoppingList.prototype.editItem = function(id, name) {
     var item = {'name': name, 'id': id};
-    var ajax = $.ajax('/items/' + id, {
-        type: 'PUT',
-        data: JSON.stringify(item),
+    var ajax = $.ajax('/items/' + id, { // this sends the request to /items/id
+        type: 'PUT',   // as a put
+        data: JSON.stringify(item), // along with this data. data is sent as a query string....
         dataType: 'json',
         contentType: 'application/json'
     });
