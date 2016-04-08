@@ -9,6 +9,11 @@
     "async": "~0.2.8",
     "body-parser": "^1.15.0",
     "express": "^3.2.6",
+    "jquery": "^2.2.3",
     "socket.io": "~0.9.14"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^2.0.1"
   }
 }

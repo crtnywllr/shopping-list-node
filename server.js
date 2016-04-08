@@ -58,8 +58,7 @@ app.delete('/items/:id', function(req, res){
   } 
 });
 
-app.put('/items/:id', function(req, res) {
-  console.log(req);// yep, this one. 
+app.put('/items/:id', jsonParser, function(req, res) {
   var itemId = parseInt(req.params.id);
   //Check for NaN
   if (itemId !== itemId) {
@@ -68,17 +67,15 @@ app.put('/items/:id', function(req, res) {
   } else {
   var updatedItem;
   storage.items.forEach(function(value, indexInArray, itemArray){
-   // console.log('value:' + value);
-    //console.log('item:' + itemId);
     if (value.id=== itemId) {
         // here, your finding the item you want to change in the array correctly, then you store it into updatedItem
       updatedItem = value;
       // then, here what do you want to put back into the array at this location?
+      updatedItem = {"name" :(req.body.name), "id": value.id};
       storage.items[indexInArray] = updatedItem;
-   } 
-    res.status(200).json(updatedItem);
-   // use this for put    storage.items[indexInArray] = newObject
+    }
 });
+res.status(200).json(updatedItem);
 }
 });
 
