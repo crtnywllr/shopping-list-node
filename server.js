@@ -30,10 +30,36 @@ app.post('/items', jsonParser, function(req, res) {
     if (!req.body) {
         return res.sendStatus(400);
     }
-
+    // /items?name=kale 
     var item = storage.add(req.body.name);
     res.status(201).json(item);
 });
+
+app.put('/items/:id', jsonParser, function(req, res) {
+  var itemId = parseInt(req.params.id);
+  //Check for NaN
+  if (itemId !== itemId) {
+     var responseMsg = {"message": "Your item id should be a number."};
+      res.status(400).json(responseMsg);
+  } else {
+  var updatedItem;
+  storage.items.forEach(function(value, indexInArray, itemArray){
+    if (value.id === itemId) {
+      updatedItem = value;
+      updatedItem = {"name" :(req.body.name), "id": value.id};
+      storage.items[indexInArray] = updatedItem;
+    }
+});
+
+if(updatedItem !== undefined){ 
+      res.status(200).json(updatedItem);
+    } else{
+      updatedItem = storage.add(req.body.name);
+    res.status(201).json(updatedItem);
+    }
+  } 
+});
+
 
 app.delete('/items/:id', function(req, res){
   var itemId = parseInt(req.params.id);
@@ -58,25 +84,8 @@ app.delete('/items/:id', function(req, res){
   } 
 });
 
-app.put('/items/:id', jsonParser, function(req, res) {
-  var itemId = parseInt(req.params.id);
-  //Check for NaN
-  if (itemId !== itemId) {
-     var responseMsg = {"message": "Your item id should be a number."};
-      res.status(400).json(responseMsg);
-  } else {
-  var updatedItem;
-  storage.items.forEach(function(value, indexInArray, itemArray){
-    if (value.id=== itemId) {
-        // here, your finding the item you want to change in the array correctly, then you store it into updatedItem
-      updatedItem = value;
-      // then, here what do you want to put back into the array at this location?
-      updatedItem = {"name" :(req.body.name), "id": value.id};
-      storage.items[indexInArray] = updatedItem;
-    }
-});
-res.status(200).json(updatedItem);
-}
-});
 
 app.listen(process.env.PORT || 8080);
+
+exports.app = app;
+exports.storage = storage;
